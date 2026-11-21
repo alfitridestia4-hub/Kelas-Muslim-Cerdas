@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kelas Muslim Cerdas — Belajar Islam, Jadi Pribadi Lebih Baik</title>
+    
+    <!-- Google Fonts: Poppins (Judul), Plus Jakarta Sans (Materi), & Amiri (Teks Arab) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Konfigurasi Tailwind Custom Colors & Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hijau-tua': '#0C4B33',
+                        'hijau-mint': '#2FA878',
+                        'hijau-lembut': '#E6F5EE',
+                        'emas': '#D4AF37',
+                        'emas-muda': '#FDF7E2',
+                        'krem': '#F8F9F0',
+                        'teks-gelap': '#1E293B',
+                        'teks-abu': '#64748B'
+                    },
+                    fontFamily: {
+                        'heading': ['Poppins', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'arab': ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Pengaturan Dasar & Mobile-First Container */
+        body {
+            background-color: #E5E7EB;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1E293B;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .font-arab {
+            font-family: 'Amiri', serif;
+            line-height: 2.1;
+        }
+
+        /* Wadah Aplikasi Utama menyerupai layar HP yang terpusat rapi di Desktop */
+        #app-shell {
+            max-width: 480px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background-color: #F8F9F0;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(12, 75, 51, 0.14);
+            padding-bottom: 88px;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar Halus */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F8F9F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 10px;
+        }
+
+        /* Animasi Transisi Tab */
+        .tab-section {
+            display: none;
+            animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Gaya Kartu Flashcard 3D Flip */
+        .perspective-container {
+            perspective: 1200px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 310px;
+            transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(12, 75, 51, 0.08);
+        }
+        .flashcard-front {
+            background: linear-gradient(145deg, #FFFFFF 0%, #F1F8F4 100%);
+            border: 2px solid #D1FAE5;
+        }
+        .flashcard-back {
+            background: linear-gradient(145deg, #0C4B33 0%, #146345 100%);
+            color: #FFFFFF;
+            transform: rotateY(180deg);
+            border: 2px solid #D4AF37;
+        }
+
+        /* Animasi Pop XP & Streak */
+        @keyframes pulseGold {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+        }
+        .animate-xp-pop {
+            animation: pulseGold 0.45s ease-in-out;
+        }
+
+        /* Bottom Navigation Bar Fixed */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background-color: #FFFFFF;
+            border-top: 1px solid #E2E8F0;
+            z-index: 40;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Toast Notification */
+        #toast-container {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 440px;
+            z-index: 100;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container Utama Aplikasi -->
+    <div id="app-shell">
+        
+        <!-- Toast Notification Area -->
+        <div id="toast-container" class="flex flex-col gap-2"></div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: BERANDA                                            -->
+        <!-- ========================================================= -->
+        <section id="tab-beranda" class="tab-section active">
+            <!-- Header Hijau Tua -->
+            <header class="bg-hijau-tua text-white pt-6 pb-16 px-5 rounded-b-[32px] relative overflow-hidden">
+                <!-- Dekorasi Pola Geometris Halus -->
+                <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-white/5 pointer-events-none"></div>
+                <div class="absolute right-12 bottom-4 w-20 h-20 rounded-full bg-emas/10 pointer-events-none"></div>
+
+                <div class="flex items-start justify-between relative z-10">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-hijau-mint/30 text-emerald-200 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                                <i class="fa-solid fa-moon text-emas mr-1"></i> Kelas Muslim Cerdas
+                            </span>
+                            <span id="header-plus-badge" class="hidden bg-emas text-hijau-tua text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <i class="fa-solid fa-crown mr-0.5"></i> PLUS
+                            </span>
+                        </div>
+                        <h1 class="text-xl font-bold tracking-tight mt-1">Assalamu'alaikum, Destia!</h1>
+                        <p class="text-emerald-100/85 text-xs mt-0.5">Belajar Islam, Jadi Pribadi Lebih Baik</p>
+                    </div>
+                    <button onclick="switchTab('profil')" class="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-emas font-heading font-bold text-base shadow-sm active:scale-95 transition">
+                        DA
+                    </button>
+                </div>
+
+                <!-- Indikator XP & Streak Belajar -->
+                <div class="grid grid-cols-2 gap-3 mt-5 relative z-10">
+                    <!-- Kartu XP -->
+                    <div id="xp-card-box" class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emas/20 border border-emas/40 flex items-center justify-center text-emas text-lg shrink-0">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-emerald-100/80 font-medium">Total Poin XP</p>
+                            <p class="font-heading font-bold text-lg text-emas leading-tight">
+                                <span id="display-xp">1250</span> <span class="text-xs font-semibold">XP</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Streak -->
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-500/20 border border-emas/40 flex items-center justify-center text-emas text-lg shrink-0">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-emerald-100/80 font-medium">Streak Belajar</p>
+                            <p class="font-heading font-bold text-lg text-white leading-tight">
+                                <span id="display-streak">5</span> <span class="text-xs font-semibold text-emas">Hari</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Kartu Progres Harian (Mengambang di bawah Header) -->
+            <div class="px-5 -mt-10 relative z-20">
+                <div class="bg-white rounded-2xl p-4 shadow-md border border-emerald-900/5">
+                    <div class="flex items-center justify-between mb-2">
+                        <div>
+                            <h2 class="text-sm font-bold text-hijau-tua">Target & Progres Harian</h2>
+                            <p id="daily-progress-subtitle" class="text-xs text-teks-abu">Lanjutkan habit ibadah & modul hari ini</p>
+                        </div>
+                        <span id="daily-progress-percent" class="font-heading font-bold text-sm text-hijau-mint bg-hijau-lembut px-2.5 py-1 rounded-xl">
+                            40%
+                        </span>
+                    </div>
+
+                    <!-- Progress Bar Hijau Mint -->
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5">
+                        <div id="daily-progress-bar" class="h-full bg-hijau-mint rounded-full transition-all duration-500 ease-out" style="width: 40%;"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100 text-xs">
+                        <span class="text-teks-abu"><i class="fa-solid fa-circle-check text-hijau-mint mr-1"></i> <span id="completed-tasks-count">2</span> dari 6 aktivitas selesai</span>
+                        <button onclick="switchTab('belajar')" class="text-hijau-tua font-semibold hover:underline flex items-center gap-1">
+                            Lanjut Belajar <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner Rekomendasi Modul Utama -->
+            <div class="px-5 mt-5">
+                <div onclick="switchTab('belajar')" class="bg-gradient-to-r from-hijau-tua to-[#136647] rounded-2xl p-4 text-white flex items-center justify-between cursor-pointer active:scale-[0.99] transition shadow-sm">
+                    <div class="pr-3">
+                        <span class="inline-block bg-emas text-hijau-tua text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider mb-1.5">
+                            E-Modul Pilihan Hari Ini
+                        </span>
+                        <h3 class="font-bold text-sm leading-snug">Etika Media Sosial dalam Islam</h3>
+                        <p class="text-[11px] text-emerald-100/80 mt-1">Fiqih Digital • Dalil, Tabel Adab & Habit Tracker</p>
+                    </div>
+                    <div class="w-11 h-11 rounded-2xl bg-hijau-mint text-white flex items-center justify-center shrink-0 shadow">
+                        <i class="fa-solid fa-book-open text-base"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 10 Kategori Materi -->
+            <div class="px-5 mt-6">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h2 class="text-base font-bold text-hijau-tua">10 Kategori Materi</h2>
+                        <p class="text-xs text-teks-abu">Pilih topik keislaman yang ingin kamu pelajari</p>
+                    </div>
+                    <span class="text-[11px] font-semibold text-hijau-mint bg-hijau-lembut px-2.5 py-1 rounded-full">10 Kurikulum</span>
+                </div>
+
+                <!-- Grid 2 Kolom Responsif -->
+                <div id="categories-grid" class="grid grid-cols-2 gap-3">
+                    <!-- Dirender dinamis lewat JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: BELAJAR (E-MODUL INTERAKTIF)                       -->
+        <!-- ========================================================= -->
+        <section id="tab-belajar" class="tab-section">
+            <!-- Header Halaman Belajar -->
+            <header class="bg-hijau-tua text-white px-5 pt-6 pb-6 rounded-b-[28px] sticky top-0 z-30 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-emas uppercase tracking-wider">E-Modul • Fiqih Digital</span>
+                        <h1 class="text-lg font-bold leading-snug mt-0.5">Etika Media Sosial dalam Islam</h1>
+                    </div>
+                    <div class="bg-white/10 px-3 py-1.5 rounded-xl text-right border border-white/15">
+                        <span class="block text-[10px] text-emerald-200">XP Kamu</span>
+                        <span class="font-heading font-bold text-sm text-emas"><span class="sync-xp">1250</span> XP</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="px-5 pt-5 space-y-5">
+                <!-- Pengantar Materi -->
+                <article class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 text-hijau-mint text-xs font-bold mb-2">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>PENGANTAR MATERI</span>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        Di era digital, jari jemari kita memiliki kedudukan yang sama dengan lisan. Setiap unggahan, komentar, dan pesan yang kita teruskan (<em>forward</em>) akan dimintai pertanggungjawaban di hadapan Allah SWT—apakah menjadi <strong>amal jariyah</strong> atau justru <strong>dosa jariyah</strong>.
+                    </p>
+                </article>
+
+                <!-- Dalil Al-Qur'an & Hadis -->
+                <article class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-hijau-tua flex items-center gap-2">
+                            <i class="fa-solid fa-quran text-emas text-base"></i> LANDASAN DALIL SHAHIH
+                        </span>
+                        <span class="text-[11px] bg-emas-muda text-amber-800 font-semibold px-2.5 py-0.5 rounded-full border border-emas/30">Prinsip Tabayyun</span>
+                    </div>
+
+                    <!-- Ayat Al-Qur'an -->
+                    <div class="bg-krem rounded-2xl p-4 border border-emerald-900/10">
+                        <p class="text-xs font-bold text-hijau-tua mb-2">QS. Al-Hujurat: 6 (Perintah Verifikasi Informasi)</p>
+                        <p class="font-arab text-right text-xl text-hijau-tua my-2 leading-loose" dir="rtl">
+                            يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ إِن جَآءَكُمْ فَاسِقٌۢ بِنَبَإٍ فَتَبَيَّنُوٓا۟ أَن تُصِيبُوا۟ قَوْمًۢا بِجَهَٰلَةٍ فَتُصْبِحُوا۟ عَلَىٰ مَا فَعَلْتُمْ نَٰدِمِينَ
+                        </p>
+                        <p class="text-xs italic text-slate-500 mt-2">
+                            "Yā ayyuhallażīna āmanū in jā'akum fāsiqum binaba'in fa tabayyanū an tuṣībū qaumam bijahālatin fa tuṣbiḥū 'alā mā fa'altum nādimīn."
+                        </p>
+                        <p class="text-xs text-slate-700 mt-2 leading-relaxed border-t border-slate-200/80 pt-2">
+                            <strong>Artinya:</strong> "Wahai orang-orang yang beriman! Jika seseorang yang fasik datang kepadamu membawa suatu berita, maka telitilah kebenarannya (tabayyun), agar kamu tidak mencelakakan suatu kaum karena kebodohan (kecerobohan), yang akhirnya kamu menyesali perbuatanmu itu."
+                        </p>
+                    </div>
+
+                    <!-- Hadis Shahih -->
+                    <div class="bg-hijau-lembut/60 rounded-2xl p-4 border border-hijau-mint/20">
+                        <p class="text-xs font-bold text-hijau-tua mb-1">Hadis Riwayat Bukhari & Muslim</p>
+                        <p class="font-arab text-right text-lg text-hijau-tua my-1" dir="rtl">
+                            مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ
+                        </p>
+                        <p class="text-xs text-slate-700 mt-1.5 leading-relaxed">
+                            <strong>Artinya:</strong> "Barangsiapa yang beriman kepada Allah dan Hari Akhir, maka hendaklah ia berkata baik (atau mengetik hal yang baik), atau hendaklah ia diam." (HR. Bukhari no. 6018 & Muslim no. 47)
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Tabel Perbandingan Modern -->
+                <article class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <h3 class="text-sm font-bold text-hijau-tua mb-1">Tabel Perbandingan Adab Digital</h3>
+                    <p class="text-xs text-teks-abu mb-3">Panduan praktis berinteraksi di media sosial</p>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr>
+                                    <th class="bg-hijau-tua text-white p-3 font-semibold w-1/2 border-r border-emerald-800">
+                                        <i class="fa-solid fa-circle-check text-hijau-mint mr-1"></i> Adab Islami (Amal Jariyah)
+                                    </th>
+                                    <th class="bg-rose-900 text-white p-3 font-semibold w-1/2">
+                                        <i class="fa-solid fa-circle-xmark text-rose-300 mr-1"></i> Perilaku Tercela (Dosa Jariyah)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="bg-white">
+                                    <td class="p-3 text-slate-700 border-r border-slate-200 align-top">
+                                        <strong>Tabayyun:</strong> Cek fakta dan sumber valid sebelum membagikan ulang berita.
+                                    </td>
+                                    <td class="p-3 text-slate-700 align-top bg-rose-50/40">
+                                        <strong>Asal Forward:</strong> Menyebar hoaks, fitnah, atau kabar burung demi sensasi.
+                                    </td>
+                                </tr>
+                                <tr class="bg-slate-50/60">
+                                    <td class="p-3 text-slate-700 border-r border-slate-200 align-top">
+                                        <strong>Qaulan Sadida:</strong> Berkomentar santun, membangun, dan mendoakan kebaikan.
+                                    </td>
+                                    <td class="p-3 text-slate-700 align-top bg-rose-50/40">
+                                        <strong>Cyberbullying:</strong> Menghujat, body shaming, dan berkomentar kasar di kolom publik.
+                                    </td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="p-3 text-slate-700 border-r border-slate-200 align-top">
+                                        <strong>Menutup Aib:</strong> Menasihati saudara secara personal lewat jalur pribadi (DM).
+                                    </td>
+                                    <td class="p-3 text-slate-700 align-top bg-rose-50/40">
+                                        <strong>Spill & Ghibah:</strong> Mengumbar aib orang lain menjadi konsumsi viral publik.
+                                    </td>
+                                </tr>
+                                <tr class="bg-slate-50/60">
+                                    <td class="p-3 text-slate-700 border-r border-slate-200 align-top">
+                                        <strong>Qana'ah & Syukur:</strong> Menjadikan medsos sarana ilmu dan silaturahmi sehat.
+                                    </td>
+                                    <td class="p-3 text-slate-700 align-top bg-rose-50/40">
+                                        <strong>Riya' & Flexing:</strong> Pamer harta/ibadah demi validasi dan memicu iri hati.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <!-- Checklist Habit Ibadah Harian Interaktif -->
+                <article class="bg-white rounded-2xl p-5 shadow-sm border-2 border-hijau-mint/30">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-sm font-bold text-hijau-tua flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-hijau-mint"></i> Checklist Habit Ibadah Harian
+                        </h3>
+                        <span class="text-[11px] font-bold text-emas bg-emas-muda px-2.5 py-0.5 rounded-full border border-emas/40">+20 XP / Habit</span>
+                    </div>
+                    <p class="text-xs text-teks-abu mb-4">Centang amalan yang sudah kamu kerjakan hari ini untuk meningkatkan progres:</p>
+
+                    <div id="habit-checklist-container" class="space-y-2.5">
+                        <!-- Dirender dinamis lewat JS -->
+                    </div>
+
+                    <!-- Tombol Selesaikan Modul -->
+                    <div class="mt-5 pt-4 border-t border-slate-100">
+                        <button id="btn-complete-module" onclick="completeModule()" class="w-full py-3.5 px-4 rounded-2xl bg-hijau-mint hover:bg-[#268e65] text-white font-heading font-semibold text-sm shadow-md shadow-hijau-mint/25 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                            <i class="fa-solid fa-award"></i>
+                            <span>Selesaikan E-Modul Ini (+50 XP)</span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: FLASHCARD (KARTU FLASH 3D FLIP)                    -->
+        <!-- ========================================================= -->
+        <section id="tab-flashcard" class="tab-section">
+            <header class="bg-hijau-tua text-white px-5 pt-6 pb-6 rounded-b-[28px]">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-emas uppercase tracking-wider">Hafalan Interaktif 3D</span>
+                        <h1 class="text-lg font-bold mt-0.5">Flashcard Arab & Doa</h1>
+                    </div>
+                    <div class="bg-white/10 px-3 py-1.5 rounded-xl text-right border border-white/15">
+                        <span class="block text-[10px] text-emerald-200">Terkumpul</span>
+                        <span class="font-heading font-bold text-sm text-emas"><span id="memorized-count">0</span>/6 Hafal</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="px-5 pt-5">
+                <!-- Indikator Kartu & Mode Tampilan -->
+                <div class="flex items-center justify-between mb-3">
+                    <span id="flashcard-counter" class="text-xs font-bold text-hijau-tua bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-100">
+                        Kartu 1 dari 6
+                    </span>
+                    <span class="text-xs text-teks-abu flex items-center gap-1.5">
+                        <i class="fa-solid fa-hand-pointer text-hijau-mint"></i> Ketuk kartu untuk membalik
+                    </span>
+                </div>
+
+                <!-- 3D Flip Card Container -->
+                <div class="perspective-container my-2">
+                    <div id="flashcard-inner" class="flashcard-inner" onclick="flipCard()">
+                        <!-- Sisi Depan -->
+                        <div class="flashcard-face flashcard-front">
+                            <div class="flex items-center justify-between">
+                                <span id="fc-category-front" class="text-[11px] font-bold px-3 py-1 rounded-full bg-hijau-lembut text-hijau-tua">
+                                    Kosakata Bahasa Arab
+                                </span>
+                                <span id="fc-status-badge" class="text-xs font-semibold text-slate-400">
+                                    <i class="fa-regular fa-circle-check"></i> Belum dihafal
+                                </span>
+                            </div>
+
+                            <div class="text-center my-auto px-2">
+                                <p id="fc-arabic" class="font-arab text-3xl font-bold text-hijau-tua mb-3" dir="rtl">الإِخْلَاصُ</p>
+                                <h2 id="fc-front-title" class="text-base font-bold text-slate-800">Apa arti kata & makna "Al-Ikhlas"?</h2>
+                                <p id="fc-translit" class="text-xs text-teks-abu italic mt-1">Transliterasi: Al-Ikhlāṣ</p>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-hijau-mint bg-white px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-sm">
+                                    <i class="fa-solid fa-rotate"></i> Ketuk untuk lihat jawaban
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sisi Belakang -->
+                        <div class="flashcard-face flashcard-back">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-bold px-3 py-1 rounded-full bg-emas/20 text-emas border border-emas/40">
+                                    Jawaban & Penjelasan
+                                </span>
+                                <i class="fa-solid fa-sparkles text-emas"></i>
+                            </div>
+
+                            <div class="text-center my-auto px-1">
+                                <h3 id="fc-back-meaning" class="text-lg font-bold text-emas mb-2">Memurnikan Niat Hanya Karena Allah</h3>
+                                <p id="fc-back-desc" class="text-xs text-emerald-50/95 leading-relaxed">
+                                    Secara bahasa berarti murni/bersih. Dalam Islam, ikhlas adalah membersihkan hati dari tujuan selain Allah SWT saat beramal shalih.
+                                </p>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-200">
+                                    <i class="fa-solid fa-rotate-left"></i> Ketuk lagi untuk kembali
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigasi Prev / Next & Tandai Hafal -->
+                <div class="flex items-center gap-3 mt-5">
+                    <button onclick="prevFlashcard()" class="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-hijau-tua flex items-center justify-center shadow-sm active:scale-95 transition" aria-label="Kartu Sebelumnya">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <button id="btn-mark-memorized" onclick="toggleMemorized()" class="flex-1 h-12 rounded-2xl bg-hijau-mint hover:bg-[#268e65] text-white font-heading font-semibold text-sm shadow-md shadow-hijau-mint/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>Tandai Sudah Hafal (+25 XP)</span>
+                    </button>
+
+                    <button onclick="nextFlashcard()" class="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-hijau-tua flex items-center justify-center shadow-sm active:scale-95 transition" aria-label="Kartu Berikutnya">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Mini Daftar 6 Kartu (Quick Jump) -->
+                <div class="mt-6">
+                    <h3 class="text-xs font-bold text-hijau-tua uppercase tracking-wider mb-2.5">Daftar 6 Kartu Pilihan</h3>
+                    <div id="flashcard-pills" class="grid grid-cols-2 gap-2">
+                        <!-- Dirender lewat JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 4: KUIS (GAMIFIKASI STUDI KASUS)                      -->
+        <!-- ========================================================= -->
+        <section id="tab-kuis" class="tab-section">
+            <header class="bg-hijau-tua text-white px-5 pt-6 pb-6 rounded-b-[28px]">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-emas uppercase tracking-wider">Tantangan Studi Kasus</span>
+                        <h1 class="text-lg font-bold mt-0.5">Kuis Muslim Cerdas</h1>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <!-- Indikator Combo Streak Kuis -->
+                        <div id="quiz-streak-pill" class="bg-emas/20 border border-emas/50 px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-transform">
+                            <i class="fa-solid fa-bolt text-emas text-xs"></i>
+                            <span class="font-heading font-bold text-xs text-emas"><span id="quiz-combo">0</span>x Combo</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="px-5 pt-5">
+                <!-- Area Soal Kuis Aktif -->
+                <div id="quiz-active-container">
+                    <!-- Progress Soal -->
+                    <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                        <span class="text-hijau-tua">Soal <span id="quiz-q-number">1</span> dari 5</span>
+                        <span class="text-emas font-bold"><i class="fa-solid fa-star mr-1"></i>+100 XP / Jawaban Benar</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-4">
+                        <div id="quiz-progress-bar" class="h-full bg-hijau-mint transition-all duration-300" style="width: 20%;"></div>
+                    </div>
+
+                    <!-- Kartu Studi Kasus -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 mb-4">
+                        <span id="quiz-topic-badge" class="inline-block text-[10px] font-bold uppercase tracking-wider bg-hijau-lembut text-hijau-tua px-2.5 py-1 rounded-md mb-2.5">
+                            Studi Kasus • Fiqih Digital
+                        </span>
+                        <p id="quiz-question-text" class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Memuat pertanyaan...
+                        </p>
+                    </div>
+
+                    <!-- Pilihan Jawaban -->
+                    <div id="quiz-options-list" class="space-y-2.5">
+                        <!-- Opsi jawaban dirender lewat JS -->
+                    </div>
+
+                    <!-- Kotak Umpan Balik Langsung (Muncul setelah menjawab) -->
+                    <div id="quiz-feedback-box" class="hidden mt-4 rounded-2xl p-4 border transition-all">
+                        <div class="flex items-start gap-3">
+                            <div id="quiz-feedback-icon" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-white"></div>
+                            <div class="flex-1">
+                                <h4 id="quiz-feedback-title" class="text-sm font-bold"></h4>
+                                <p id="quiz-feedback-explanation" class="text-xs mt-1 leading-relaxed"></p>
+                            </div>
+                        </div>
+                        <button id="btn-next-question" onclick="nextQuestion()" class="w-full mt-4 py-3 rounded-xl bg-hijau-tua text-white font-heading font-semibold text-xs flex items-center justify-center gap-2 active:scale-[0.98] transition">
+                            <span>Lanjut Soal Berikutnya</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Layar Hasil Akhir Kuis -->
+                <div id="quiz-result-container" class="hidden space-y-5">
+                    <div class="bg-white rounded-3xl p-6 text-center shadow-md border border-emas/30 relative overflow-hidden">
+                        <div class="w-16 h-16 rounded-2xl bg-emas-muda border-2 border-emas text-emas flex items-center justify-center text-3xl mx-auto mb-3 shadow-sm">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h2 class="text-lg font-bold text-hijau-tua">Alhamdulillah, Kuis Selesai!</h2>
+                        <p class="text-xs text-teks-abu mt-1">Berikut ringkasan performa studi kasusmu</p>
+
+                        <div class="grid grid-cols-3 gap-2 mt-5">
+                            <div class="bg-krem p-3 rounded-2xl border border-slate-100">
+                                <span class="block text-[10px] text-teks-abu font-medium">Skor Akhir</span>
+                                <span id="res-score" class="font-heading font-bold text-lg text-hijau-tua">100</span>
+                            </div>
+                            <div class="bg-emas-muda p-3 rounded-2xl border border-emas/30">
+                                <span class="block text-[10px] text-amber-800 font-medium">XP Didapat</span>
+                                <span id="res-xp" class="font-heading font-bold text-lg text-emas">+500</span>
+                            </div>
+                            <div class="bg-hijau-lembut p-3 rounded-2xl border border-hijau-mint/20">
+                                <span class="block text-[10px] text-hijau-tua font-medium">Benar</span>
+                                <span id="res-correct" class="font-heading font-bold text-lg text-hijau-mint">5/5</span>
+                            </div>
+                        </div>
+
+                        <button onclick="restartQuiz()" class="w-full mt-5 py-3.5 rounded-2xl bg-hijau-mint hover:bg-[#268e65] text-white font-heading font-semibold text-sm shadow-md shadow-hijau-mint/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span>Ulangi Kuis Studi Kasus</span>
+                        </button>
+                    </div>
+
+                    <!-- Rincian Pembahasan Lengkap 5 Soal -->
+                    <div>
+                        <h3 class="text-sm font-bold text-hijau-tua mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open-reader text-hijau-mint"></i> Pembahasan Lengkap 5 Soal
+                        </h3>
+                        <div id="quiz-review-list" class="space-y-3">
+                            <!-- Pembahasan dirender lewat JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 5: PROFIL & REWARD                                    -->
+        <!-- ========================================================= -->
+        <section id="tab-profil" class="tab-section">
+            <header class="bg-hijau-tua text-white px-5 pt-7 pb-14 rounded-b-[32px] text-center relative">
+                <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-emas to-amber-500 text-hijau-tua font-heading font-extrabold text-2xl flex items-center justify-center mx-auto shadow-lg border-4 border-white/20">
+                    DA
+                </div>
+                <div class="mt-3 flex items-center justify-center gap-2">
+                    <h1 class="text-lg font-bold">Destia Alfitri</h1>
+                    <span id="profile-plus-tag" class="hidden bg-emas text-hijau-tua text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                        PLUS MEMBER
+                    </span>
+                </div>
+                <p id="profile-level-title" class="text-xs text-emerald-200 mt-0.5">Level 3 • Penuntut Ilmu Istiqamah</p>
+            </header>
+
+            <!-- Kartu Statistik Profil -->
+            <div class="px-5 -mt-8 relative z-10">
+                <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-100 grid grid-cols-3 divide-x divide-slate-100 text-center">
+                    <div>
+                        <span class="block text-[11px] text-teks-abu">Total XP</span>
+                        <span class="font-heading font-bold text-base text-emas sync-xp">1250</span>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-teks-abu">Streak</span>
+                        <span class="font-heading font-bold text-base text-hijau-tua">5 Hari</span>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-teks-abu">Lencana</span>
+                        <span id="unlocked-badges-count" class="font-heading font-bold text-base text-hijau-mint">3/4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-5 mt-5 space-y-5">
+                <!-- Banner Upgrade Kelas Muslim Cerdas Plus -->
+                <div id="upgrade-banner-card" class="bg-gradient-to-br from-[#1A2E26] via-hijau-tua to-[#0F5B3E] rounded-2xl p-5 text-white border border-emas/40 shadow-md relative overflow-hidden">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <span class="inline-flex items-center gap-1 bg-emas text-hijau-tua text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase mb-2">
+                                <i class="fa-solid fa-crown"></i> Paket Premium
+                            </span>
+                            <h2 class="text-base font-bold leading-snug">Kelas Muslim Cerdas <span class="text-emas">Plus</span></h2>
+                            <p class="text-xs text-emerald-100/85 mt-1 leading-relaxed">
+                                Buka akses penuh 10 kurikulum, tanya jawab langsung bersama Ustadz/Ustadzah, & e-sertifikat terverifikasi.
+                            </p>
+                        </div>
+                    </div>
+                    <button id="btn-open-upgrade" onclick="openUpgradeModal()" class="w-full mt-4 py-3 px-4 rounded-xl bg-emas hover:bg-amber-400 text-hijau-tua font-heading font-bold text-xs shadow flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Upgrade ke Kelas Muslim Cerdas Plus</span>
+                    </button>
+                </div>
+
+                <!-- Koleksi Lencana Prestasi -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-bold text-hijau-tua">Lencana Prestasi (Badges)</h3>
+                        <span class="text-[11px] text-teks-abu">Terbuka otomatis via XP</span>
+                    </div>
+
+                    <div id="badges-grid" class="grid grid-cols-2 gap-3">
+                        <!-- Dirender dinamis lewat JS -->
+                    </div>
+                </div>
+
+                <!-- Kartu Download E-Sertifikat -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-2xl bg-hijau-lembut text-hijau-tua flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-hijau-tua">E-Sertifikat Kelulusan</h3>
+                            <p class="text-xs text-teks-abu">Unduh sertifikat resmi atas nama <strong>Destia Alfitri</strong></p>
+                        </div>
+                    </div>
+
+                    <button onclick="downloadCertificate()" class="w-full py-3.5 px-4 rounded-2xl bg-hijau-mint hover:bg-[#268e65] text-white font-heading font-semibold text-sm shadow-md shadow-hijau-mint/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download E-Sertifikat (PNG)</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- BOTTOM NAVIGATION BAR (5 TAB FIXED)                       -->
+        <!-- ========================================================= -->
+        <nav class="bottom-nav px-2 py-2">
+            <div class="grid grid-cols-5 items-center">
+                <button onclick="switchTab('beranda')" data-tab="beranda" class="nav-btn active flex flex-col items-center justify-center py-1.5 text-hijau-tua transition">
+                    <div class="nav-icon-wrap w-10 h-7 rounded-full flex items-center justify-center bg-hijau-lembut text-hijau-mint mb-0.5 transition">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    <span class="text-[10px] font-bold">Beranda</span>
+                </button>
+
+                <button onclick="switchTab('belajar')" data-tab="belajar" class="nav-btn flex flex-col items-center justify-center py-1.5 text-slate-400 transition">
+                    <div class="nav-icon-wrap w-10 h-7 rounded-full flex items-center justify-center mb-0.5 transition">
+                        <i class="fa-solid fa-book-open text-sm"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold">Belajar</span>
+                </button>
+
+                <button onclick="switchTab('flashcard')" data-tab="flashcard" class="nav-btn flex flex-col items-center justify-center py-1.5 text-slate-400 transition">
+                    <div class="nav-icon-wrap w-10 h-7 rounded-full flex items-center justify-center mb-0.5 transition">
+                        <i class="fa-solid fa-layer-group text-sm"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold">Flashcard</span>
+                </button>
+
+                <button onclick="switchTab('kuis')" data-tab="kuis" class="nav-btn flex flex-col items-center justify-center py-1.5 text-slate-400 transition">
+                    <div class="nav-icon-wrap w-10 h-7 rounded-full flex items-center justify-center mb-0.5 transition">
+                        <i class="fa-solid fa-gamepad text-sm"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold">Kuis</span>
+                </button>
+
+                <button onclick="switchTab('profil')" data-tab="profil" class="nav-btn flex flex-col items-center justify-center py-1.5 text-slate-400 transition">
+                    <div class="nav-icon-wrap w-10 h-7 rounded-full flex items-center justify-center mb-0.5 transition">
+                        <i class="fa-solid fa-medal text-sm"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold">Profil</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- ========================================================= -->
+        <!-- MODAL: PRATINJAU KATEGORI MATERI                          -->
+        <!-- ========================================================= -->
+        <div id="category-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-end sm:items-center justify-center p-4">
+            <div class="bg-white w-full max-w-[440px] rounded-3xl p-6 shadow-2xl animate-[fadeInUp_0.25s_ease-out]">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div id="modal-cat-icon" class="w-12 h-12 rounded-2xl bg-hijau-lembut text-hijau-tua flex items-center justify-center text-xl"></div>
+                        <div>
+                            <span id="modal-cat-status" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-hijau-lembut text-hijau-mint">Tersedia</span>
+                            <h3 id="modal-cat-title" class="text-base font-bold text-hijau-tua mt-1">Judul Kategori</h3>
+                        </div>
+                    </div>
+                    <button onclick="closeCategoryModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <p id="modal-cat-desc" class="text-xs text-slate-600 leading-relaxed mt-4">
+                    Deskripsi kategori...
+                </p>
+
+                <div class="bg-krem rounded-2xl p-3.5 mt-4 border border-slate-100">
+                    <p class="text-[11px] font-bold text-hijau-tua mb-1.5">Silabus Ringkas:</p>
+                    <ul id="modal-cat-syllabus" class="text-xs text-slate-700 space-y-1.5 list-disc list-inside"></ul>
+                </div>
+
+                <div class="flex gap-2.5 mt-5">
+                    <button onclick="closeCategoryModal()" class="flex-1 py-3 rounded-xl bg-slate-100 text-slate-600 font-heading font-semibold text-xs">
+                        Tutup
+                    </button>
+                    <button id="modal-cat-action-btn" class="flex-1 py-3 rounded-xl bg-hijau-mint text-white font-heading font-semibold text-xs shadow">
+                        Mulai Belajar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- MODAL: UPGRADE KELAS MUSLIM CERDAS PLUS                   -->
+        <!-- ========================================================= -->
+        <div id="upgrade-modal" class="fixed inset-0 bg-slate-900/65 backdrop-blur-xs z-50 hidden items-end sm:items-center justify-center p-4">
+            <div class="bg-white w-full max-w-[440px] rounded-3xl overflow-hidden shadow-2xl animate-[fadeInUp_0.25s_ease-out]">
+                <div class="bg-hijau-tua text-white p-6 text-center relative">
+                    <button onclick="closeUpgradeModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="w-14 h-14 rounded-2xl bg-emas text-hijau-tua flex items-center justify-center text-2xl mx-auto mb-2 shadow">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">Kelas Muslim Cerdas <span class="text-emas">Plus</span></h3>
+                    <p class="text-xs text-emerald-100/85 mt-1">Investasi ilmu terbaik untuk dunia & akhirat</p>
+                </div>
+
+                <div class="p-6">
+                    <ul class="space-y-3 text-xs text-slate-700">
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-circle-check text-hijau-mint text-base"></i>
+                            <span>Akses penuh ke seluruh <strong>10 Kategori E-Modul & Video</strong></span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-circle-check text-hijau-mint text-base"></i>
+                            <span>Sesi Konsultasi & Tanya Jawab bersama <strong>Asatidz Bersertifikat</strong></span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-circle-check text-hijau-mint text-base"></i>
+                            <span><strong>2x Lipat Perolehan XP</strong> & Lencana Emas Eksklusif</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-circle-check text-hijau-mint text-base"></i>
+                            <span>Pengalaman belajar fokus <strong>100% Tanpa Iklan</strong></span>
+                        </li>
+                    </ul>
+
+                    <div class="bg-emas-muda border border-emas/40 rounded-2xl p-3.5 mt-5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-amber-800 font-semibold block">Paket Berlangganan</span>
+                            <span class="font-heading font-bold text-base text-hijau-tua">Rp 49.000 <span class="text-xs font-normal text-slate-600">/ bulan</span></span>
+                        </div>
+                        <span class="bg-hijau-tua text-emas text-[10px] font-bold px-2.5 py-1 rounded-lg">HEMAT 50%</span>
+                    </div>
+
+                    <button onclick="activatePlusMembership()" class="w-full mt-5 py-3.5 rounded-2xl bg-hijau-mint hover:bg-[#268e65] text-white font-heading font-bold text-sm shadow-lg shadow-hijau-mint/25 flex items-center justify-center gap-2 transition active:scale-[0.98]">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Aktifkan Membership Plus Sekarang</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas Tersembunyi untuk Pembuatan E-Sertifikat -->
+        <canvas id="certificate-canvas" width="1200" height="850" class="hidden"></canvas>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- LOGIKA JAVASCRIPT INTERAKTIF & STATE MANAGEMENT           -->
+    <!-- ========================================================= -->
+    <script>
+        // -------------------------------------------------------------
+        // 1. STATE UTAMA APLIKASI (TERSINKRONISASI ANTAR SEMUA TAB)
+        // -------------------------------------------------------------
+        const appState = {
+            userName: "Destia Alfitri",
+            xp: 1250,
+            streak: 5,
+            isPlus: false,
+            moduleCompleted: false,
+            // Checklist Habit Harian (2 sudah tercentang di awal -> progres awal 40%)
+            habits: [
+                { id: 1, title: "Tabayyun & cek fakta sebelum share informasi", xp: 20, completed: true },
+                { id: 2, title: "Menjaga komentar positif & santun di media sosial", xp: 20, completed: true },
+                { id: 3, title: "Tilawah Al-Qur'an minimal 1 halaman hari ini", xp: 20, completed: false },
+                { id: 4, title: "Membaca Dzikir Pagi atau Petang", xp: 20, completed: false },
+                { id: 5, title: "Sedekah Subuh / berbagi kebaikan hari ini", xp: 20, completed: false }
+            ],
+            // Flashcards (6 Kartu: Arab & Doa Harian)
+            currentCardIndex: 0,
+            isCardFlipped: false,
+            flashcards: [
+                {
+                    id: 1,
+                    category: "Kosakata Bahasa Arab",
+                    arabic: "الإِخْلَاصُ",
+                    translit: "Al-Ikhlāṣ",
+                    question: "Apa arti & makna istilah 'Al-Ikhlas'?",
+                    meaning: "Memurnikan Niat Hanya Karena Allah",
+                    desc: "Secara bahasa berarti murni atau bersih. Dalam syariat, ikhlas ialah membersihkan tujuan beribadah semata-mata mengharap ridha Allah SWT.",
+                    memorized: false
+                },
+                {
+                    id: 2,
+                    category: "Doa Harian",
+                    arabic: "رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا",
+                    translit: "Rabbi zidnī 'ilman warzuqnī fahmā",
+                    question: "Doa Sebelum Belajar & Menuntut Ilmu",
+                    meaning: "Ya Tuhanku, tambahkanlah kepadaku ilmu dan berilah aku pemahaman yang baik.",
+                    desc: "Dibaca sebelum memulai kajian, membaca buku, atau belajar agar ilmu yang didapat berkah dan mudah dipahami.",
+                    memorized: false
+                },
+                {
+                    id: 3,
+                    category: "Kosakata Bahasa Arab",
+                    arabic: "التَّبَيُّنُ",
+                    translit: "At-Tabayyun",
+                    question: "Apa makna kata 'At-Tabayyun' dalam Fiqih Digital?",
+                    meaning: "Meneliti & Memverifikasi Kebenaran Berita",
+                    desc: "Sikap hati-hati dalam menerima informasi dengan mencari kejelasan sumber agar terhindar dari menyebarkan hoaks atau fitnah.",
+                    memorized: false
+                },
+                {
+                    id: 4,
+                    category: "Doa Harian",
+                    arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+                    translit: "Rabbanā ātinā fid-dunyā ḥasanah wa fil-ākhirati ḥasanah wa qinā 'ażāban-nār",
+                    question: "Doa Sapu Jagat (Kebaikan Dunia & Akhirat)",
+                    meaning: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, serta lindungilah kami dari siksa neraka.",
+                    desc: "Doa yang paling sering dipanjatkan oleh Rasulullah SAW karena mencakup seluruh permohonan kebaikan hidup.",
+                    memorized: false
+                },
+                {
+                    id: 5,
+                    category: "Kosakata Bahasa Arab",
+                    arabic: "الأَمَانَةُ",
+                    translit: "Al-Amānah",
+                    question: "Apa arti sifat 'Al-Amanah'?",
+                    meaning: "Dapat Dipercaya & Menjaga Titipan",
+                    desc: "Sifat wajib bagi Rasul sekaligus karakter utama seorang Muslim dalam menjaga kepercayaan, rahasia, jabatan, maupun tugas.",
+                    memorized: false
+                },
+                {
+                    id: 6,
+                    category: "Doa Harian",
+                    arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
+                    translit: "Allāhumma innī as'aluka 'ilman nāfi'an, wa rizqan ṭayyiban, wa 'amalan mutaqabbalā",
+                    question: "Doa Pagi Memohon Ilmu, Rezeki & Amal",
+                    meaning: "Ya Allah, sesungguhnya aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang halal lagi baik, dan amal yang diterima.",
+                    desc: "Sunnah dibaca setiap pagi setelah melaksanakan shalat Subuh (HR. Ibnu Majah).",
+                    memorized: false
+                }
+            ],
+            // Kuis Gamifikasi 5 Soal Studi Kasus Modern
+            quiz: {
+                currentIndex: 0,
+                score: 0,
+                correctCount: 0,
+                combo: 0,
+                earnedXp: 0,
+                answeredCurrent: false,
+                questions: [
+                    {
+                        topic: "Fiqih Digital",
+                        question: "Di grup WhatsApp keluarga, seorang kerabat membagikan pesan berantai tentang isu sensitif tanpa sumber jelas dengan tulisan 'Sebarkan sekarang juga!'. Sikap Muslim Cerdas yang paling tepat adalah...",
+                        options: [
+                            "Langsung meneruskannya ke grup lain agar keluarga waspada",
+                            "Melakukan tabayyun dengan mengecek kredibilitas sumber resmi sebelum merespons",
+                            "Mengomentari dengan nada mengejek pengirim pesan di grup",
+                            "Menyimpannya di status media sosial agar viral"
+                        ],
+                        correctIndex: 1,
+                        explanation: "Sesuai QS. Al-Hujurat: 6, seorang mukmin wajib melakukan tabayyun (verifikasi fakta) terlebih dahulu agar tidak ikut menyebarkan berita dusta atau mencelakakan orang lain."
+                    },
+                    {
+                        topic: "Muamalah Syariah",
+                        question: "Saat checkout belanja online, Raka ditawari fitur 'PayLater' dengan tambahan bunga/denda keterlambatan yang disyaratkan di awal akad. Bagaimana hukum transaksi tersebut dalam fikih muamalah?",
+                        options: [
+                            "Boleh saja selama bunganya di bawah 5%",
+                            "Dihindari karena mengandung unsur Riba Qardh (tambahan atas pinjaman)",
+                            "Sunnah dilakukan untuk melancarkan perputaran ekonomi",
+                            "Wajib digunakan saat ada diskon gratis ongkir"
+                        ],
+                        correctIndex: 1,
+                        explanation: "Setiap utang-piutang (qardh) yang mensyaratkan tambahan manfaat atau bunga termasuk kategori riba yang diharamkan dalam Islam."
+                    },
+                    {
+                        topic: "Akhlak & Adab Digital",
+                        question: "Kamu melihat seorang kreator konten Muslim melakukan kekeliruan dalam penyampaian informasi di video publik. Bagaimana adab menasihati yang diajarkan Imam Asy-Syafi'i?",
+                        options: [
+                            "Menulis komentar pedas di kolom komentar agar ia malu dan sadar",
+                            "Membuat video sindiran terbuka agar followers-nya tahu",
+                            "Menasihatinya secara empat mata melalui pesan pribadi (DM) dengan bahasa santun",
+                            "Memblokir dan menyebarkan tangkapan layar kesalahannya"
+                        ],
+                        correctIndex: 2,
+                        explanation: "Imam Asy-Syafi'i berkata: 'Barangsiapa menasihati saudaranya secara sembunyi-sembunyi, maka ia telah menasihati dan menghiasinya. Barangsiapa menasihatinya di depan umum, maka ia telah mempermalukannya.'"
+                    },
+                    {
+                        topic: "Akhlak & Kesehatan Mental",
+                        question: "Nadia sering merasa cemas berlebihan (overthinking) dan rendah diri setiap kali melihat pencapaian teman-temannya di media sosial. Solusi Islami untuk menenangkan hatinya adalah...",
+                        options: [
+                            "Memaksakan diri membeli barang mewah agar terlihat setara",
+                            "Melatih sifat Qana'ah, memperbanyak syukur, dzikir, dan membatasi screen time",
+                            "Mencari-cari kekurangan orang lain agar merasa lebih unggul",
+                            "Mengeluh terus-menerus di akun kedua (second account)"
+                        ],
+                        correctIndex: 1,
+                        explanation: "Qana'ah (merasa cukup dengan karunia Allah) dan dzikrullah (QS. Ar-Ra'd: 28) adalah kunci ketenangan jiwa agar tidak terjebak perbandingan sosial."
+                    },
+                    {
+                        topic: "Halal Lifestyle",
+                        question: "Saat berwisata kuliner ke luar negeri yang mayoritas penduduknya non-Muslim, kamu menemukan restoran yang menjual menu ayam goreng tanpa label halal. Apa langkah yang paling tepat?",
+                        options: [
+                            "Langsung makan karena ayam pada dasarnya hewan halal",
+                            "Cukup membaca Bismillah sebelum makan agar menjadi halal",
+                            "Memastikan cara penyembelihan syar'i & bahan campurannya, atau memilih opsi seafood/vegetarian yang jelas kehalalannya",
+                            "Makan sedikit saja sekadar mencicipi"
+                        ],
+                        correctIndex: 2,
+                        explanation: "Hewan halal seperti ayam wajib disembelih secara syar'i dengan menyebut nama Allah. Jika meragukan (syubhat), tinggalkan menuju opsi yang jelas halalnya seperti hasil laut."
+                    }
+                ]
+            }
+        };
+
+        // Data 10 Kategori Materi di Beranda
+        const categoriesData = [
+            {
+                id: 1,
+                title: "Fiqih Digital",
+                icon: "fa-mobile-screen-button",
+                color: "bg-emerald-100 text-hijau-tua",
+                status: "Aktif",
+                isActiveModule: true,
+                desc: "Panduan syariat Islam dalam menggunakan media sosial, menjaga jejak digital, privasi, dan etika berkomunikasi di ruang siber.",
+                syllabus: ["Adab Tabayyun & Anti-Hoaks", "Hukum Konten & Hak Cipta Digital", "Menjaga Lisan & Jari dari Dosa Jariyah"]
+            },
+            {
+                id: 2,
+                title: "Muamalah & Ekonomi Syariah",
+                icon: "fa-coins",
+                color: "bg-amber-100 text-amber-800",
+                status: "Populer",
+                isActiveModule: false,
+                desc: "Memahami prinsip transaksi halal, menghindari riba, gharar, serta mengenal investasi dan perbankan syariah modern.",
+                syllabus: ["Akad Jual Beli Online & Dropship", "Mengenal Bahaya Riba & PayLater", "Zakat Profesi & Manajemen Keuangan Keluarga"]
+            },
+            {
+                id: 3,
+                title: "Kosakata Bahasa Arab",
+                icon: "fa-language",
+                color: "bg-teal-100 text-teal-800",
+                status: "6 Kartu",
+                isFlashcard: true,
+                desc: "Perkaya perbendaharaan kata Bahasa Arab harian dan istilah kunci dalam Al-Qur'an dengan metode hafalan aktif.",
+                syllabus: ["Kosakata Akhlak & Ibadah", "Kata Kerja Sehari-hari", "Istilah Kunci dalam Al-Qur'an"]
+            },
+            {
+                id: 4,
+                title: "Tajwid Praktis",
+                icon: "fa-book-quran",
+                color: "bg-emerald-100 text-hijau-tua",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Belajar hukum bacaan Al-Qur'an secara mudah dan sistematis agar tilawah semakin tartil dan sesuai makhraj.",
+                syllabus: ["Hukum Nun Sukun & Tanwin", "Makharijul Huruf Dasar", "Tanda Waqaf & Mad"]
+            },
+            {
+                id: 5,
+                title: "Fiqih Ibadah",
+                icon: "fa-mosque",
+                color: "bg-sky-100 text-sky-800",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Tuntunan lengkap thaharah, shalat fardhu & sunnah, puasa, serta ibadah harian sesuai sunnah Rasulullah SAW.",
+                syllabus: ["Kesempurnaan Wudhu & Shalat", "Fiqih Shalat Musafir (Jamak & Qashar)", "Amalan Sunnah Penggugur Dosa"]
+            },
+            {
+                id: 6,
+                title: "Kisah Nabi",
+                icon: "fa-scroll",
+                color: "bg-amber-100 text-amber-800",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Menyelami hikmah perjuangan, kesabaran, dan keteladanan para Nabi dan Rasul dari Nabi Adam AS hingga Nabi Muhammad SAW.",
+                syllabus: ["Keteguhan Ulul Azmi", "Sirah Nabawiyah Periode Makkah & Madinah", "Ibrah Kesabaran Nabi Yusuf & Ayyub AS"]
+            },
+            {
+                id: 7,
+                title: "Biografi Sahabat & Ilmuwan Muslim",
+                icon: "fa-compass",
+                color: "bg-indigo-100 text-indigo-800",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Mengenal generasi terbaik umat Islam serta kontribusi gemilang ilmuwan Muslim bagi peradaban dunia.",
+                syllabus: ["Khulafaur Rasyidin & Sahabiyah", "Al-Khawarizmi & Ibnu Sina", "Fatimah Al-Fihri: Pendiri Universitas Pertama"]
+            },
+            {
+                id: 8,
+                title: "Akhlak & Kesehatan Mental",
+                icon: "fa-heart-pulse",
+                color: "bg-rose-100 text-rose-800",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Tazkiyatun Nafs (penyucian jiwa), mengelola stres, kecemasan, dan membangun ketangguhan mental berbasis iman.",
+                syllabus: ["Terapi Overthinking dengan Tawakal", "Sabar, Syukur & Qana'ah", "Menjaga Kesehatan Hati dari Hasad"]
+            },
+            {
+                id: 9,
+                title: "Doa Harian",
+                icon: "fa-hands-praying",
+                color: "bg-emerald-100 text-hijau-tua",
+                status: "6 Kartu",
+                isFlashcard: true,
+                desc: "Kumpulan doa-doa ma'tsur dari Al-Qur'an dan Hadis Shahih untuk mengiringi setiap aktivitas dari bangun hingga tidur kembali.",
+                syllabus: ["Doa Menuntut Ilmu & Kebaikan Dunia Akhirat", "Dzikir Pagi & Petang Ringkas", "Doa Perlindungan Diri & Keluarga"]
+            },
+            {
+                id: 10,
+                title: "Halal Lifestyle",
+                icon: "fa-leaf",
+                color: "bg-lime-100 text-lime-800",
+                status: "Modul",
+                isActiveModule: false,
+                desc: "Menerapkan gaya hidup halal dan thayyib dalam konsumsi makanan, kosmetik, busana, hingga wisata ramah Muslim.",
+                syllabus: ["Konsep Halal & Thayyib", "Mengenal Titik Kritis Kehalalan Produk", "Etika Berbusana & Pergaulan Islami"]
+            }
+        ];
+
+        // Data Lencana Prestasi
+        const badgesData = [
+            { id: 1, name: "Pejuang Subuh", desc: "Aktif belajar di pagi hari", icon: "fa-sun", requiredXp: 500 },
+            { id: 2, name: "Ahli Tabayyun", desc: "Menyelesaikan materi Fiqih Digital", icon: "fa-shield-halved", requiredXp: 1000 },
+            { id: 3, name: "5-Day Streak Master", desc: "Konsisten belajar 5 hari berturut", icon: "fa-fire", requiredXp: 1200 },
+            { id: 4, name: "Cendekia Muslim", desc: "Mencapai 1.600 XP pembelajaran", icon: "fa-crown", requiredXp: 1600 }
+        ];
+
+        // -------------------------------------------------------------
+        // 2. FUNGSI NAVIGASI & SINKRONISASI UI REAL-TIME
+        // -------------------------------------------------------------
+        function switchTab(tabName) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.tab-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            // Tampilkan target section
+            const target = document.getElementById(`tab-${tabName}`);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update gaya tombol Bottom Navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const iconWrap = btn.querySelector('.nav-icon-wrap');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.remove('text-slate-400');
+                    btn.classList.add('text-hijau-tua');
+                    iconWrap.classList.add('bg-hijau-lembut', 'text-hijau-mint');
+                } else {
+                    btn.classList.add('text-slate-400');
+                    btn.classList.remove('text-hijau-tua');
+                    iconWrap.classList.remove('bg-hijau-lembut', 'text-hijau-mint');
+                }
+            });
+
+            // Pastikan data terbaru ter-render saat pindah tab
+            syncAllUI();
+        }
+
+        function addXP(amount, reasonText) {
+            const multiplier = appState.isPlus ? 2 : 1;
+            const finalXp = amount * multiplier;
+            appState.xp += finalXp;
+
+            // Efek animasi pada kotak XP Beranda
+            const xpBox = document.getElementById('xp-card-box');
+            if (xpBox) {
+                xpBox.classList.remove('animate-xp-pop');
+                void xpBox.offsetWidth; // trigger reflow
+                xpBox.classList.add('animate-xp-pop');
+            }
+
+            const bonusLabel = appState.isPlus ? ` (2x Bonus PLUS!)` : ``;
+            showToast(`+${finalXp} XP${bonusLabel} • ${reasonText}`, 'xp');
+            syncAllUI();
+        }
+
+        function syncAllUI() {
+            // 1. Update semua angka XP di seluruh halaman
+            const mainXpEl = document.getElementById('display-xp');
+            if (mainXpEl) mainXpEl.textContent = appState.xp.toLocaleString('id-ID');
+
+            document.querySelectorAll('.sync-xp').forEach(el => {
+                el.textContent = appState.xp.toLocaleString('id-ID');
+            });
+
+            // 2. Hitung Progres Harian (5 Habit + 1 E-Modul = 6 item)
+            const completedHabits = appState.habits.filter(h => h.completed).length;
+            const totalItems = appState.habits.length + 1;
+            const completedTotal = completedHabits + (appState.moduleCompleted ? 1 : 0);
+            const percentage = Math.round((completedTotal / totalItems) * 100);
+
+            const progressBar = document.getElementById('daily-progress-bar');
+            const progressPercent = document.getElementById('daily-progress-percent');
+            const completedCountEl = document.getElementById('completed-tasks-count');
+            const subtitleEl = document.getElementById('daily-progress-subtitle');
+
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+            if (progressPercent) progressPercent.textContent = `${percentage}%`;
+            if (completedCountEl) completedCountEl.textContent = completedTotal;
+            if (subtitleEl) {
+                subtitleEl.textContent = percentage === 100 
+                    ? "MasyaAllah! Semua target harianmu tuntas!" 
+                    : "Lanjutkan habit ibadah & modul hari ini";
+            }
+
+            // 3. Update status Member Plus jika aktif
+            if (appState.isPlus) {
+                document.getElementById('header-plus-badge').classList.remove('hidden');
+                document.getElementById('profile-plus-tag').classList.remove('hidden');
+                const btnUpgrade = document.getElementById('btn-open-upgrade');
+                if (btnUpgrade) {
+                    btnUpgrade.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Membership PLUS Aktif (2x XP)</span>`;
+                    btnUpgrade.classList.remove('bg-emas', 'hover:bg-amber-400', 'text-hijau-tua');
+                    btnUpgrade.classList.add('bg-hijau-mint', 'text-white');
+                }
+            }
+
+            // 4. Update Level Profil berdasarkan XP
+            const levelTitle = document.getElementById('profile-level-title');
+            if (levelTitle) {
+                if (appState.xp >= 1800) {
+                    levelTitle.textContent = "Level 5 • Duta Muslim Cerdas";
+                } else if (appState.xp >= 1500) {
+                    levelTitle.textContent = "Level 4 • Mujahid Ilmu Digital";
+                } else {
+                    levelTitle.textContent = "Level 3 • Penuntut Ilmu Istiqamah";
+                }
+            }
+
+            // 5. Render ulang Badges agar lencana terkunci otomatis terbuka jika XP tercapai
+            renderBadges();
+        }
+
+        // Toast Notification System (Pengganti alert)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-hijau-tua text-white border-hijau-mint';
+            let iconHtml = '<i class="fa-solid fa-circle-check text-hijau-mint"></i>';
+
+            if (type === 'xp') {
+                bgClass = 'bg-hijau-tua text-white border-emas';
+                iconHtml = '<i class="fa-solid fa-star text-emas"></i>';
+            } else if (type === 'warning') {
+                bgClass = 'bg-rose-900 text-white border-rose-400';
+                iconHtml = '<i class="fa-solid fa-circle-info text-rose-300"></i>';
+            }
+
+            toast.className = `${bgClass} border px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2.5 text-xs font-semibold transition-all duration-300 transform translate-y-0 opacity-100`;
+            toast.innerHTML = `${iconHtml}<span class="flex-1">${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2600);
+        }
+
+        // -------------------------------------------------------------
+        // 3. TAB 1: RENDER 10 KATEGORI MATERI & MODAL PRATINJAU
+        // -------------------------------------------------------------
+        function renderCategories() {
+            const grid = document.getElementById('categories-grid');
+            grid.innerHTML = categoriesData.map(cat => `
+                <div onclick="openCategoryModal(${cat.id})" class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 hover:border-hijau-mint/50 transition cursor-pointer active:scale-[0.98] flex flex-col justify-between">
+                    <div class="flex items-start justify-between gap-2 mb-2.5">
+                        <div class="w-10 h-10 rounded-xl ${cat.color} flex items-center justify-center text-base shrink-0">
+                            <i class="fa-solid ${cat.icon}"></i>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${cat.isActiveModule ? 'bg-hijau-mint text-white' : 'bg-slate-100 text-teks-abu'}">
+                            ${cat.status}
+                        </span>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-hijau-tua leading-snug line-clamp-2">${cat.title}</h3>
+                        <p class="text-[10px] text-teks-abu mt-1 flex items-center gap-1">
+                            <span>Buka materi</span>
+                            <i class="fa-solid fa-chevron-right text-[8px] text-hijau-mint"></i>
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCategoryModal(catId) {
+            const cat = categoriesData.find(c => c.id === catId);
+            if (!cat) return;
+
+            const modal = document.getElementById('category-modal');
+            const iconBox = document.getElementById('modal-cat-icon');
+            iconBox.className = `w-12 h-12 rounded-2xl ${cat.color} flex items-center justify-center text-xl shrink-0`;
+            iconBox.innerHTML = `<i class="fa-solid ${cat.icon}"></i>`;
+
+            document.getElementById('modal-cat-status').textContent = cat.status;
+            document.getElementById('modal-cat-title').textContent = cat.title;
+            document.getElementById('modal-cat-desc').textContent = cat.desc;
+
+            const syllabusList = document.getElementById('modal-cat-syllabus');
+            syllabusList.innerHTML = cat.syllabus.map(item => `<li>${item}</li>`).join('');
+
+            const actionBtn = document.getElementById('modal-cat-action-btn');
+            if (cat.isFlashcard) {
+                actionBtn.textContent = "Buka Flashcard 3D";
+                actionBtn.onclick = () => {
+                    closeCategoryModal();
+                    switchTab('flashcard');
+                };
+            } else {
+                actionBtn.textContent = cat.isActiveModule ? "Buka E-Modul Lengkap" : "Pelajari E-Modul";
+                actionBtn.onclick = () => {
+                    closeCategoryModal();
+                    switchTab('belajar');
+                    if (!cat.isActiveModule) {
+                        showToast(`Menampilkan modul utama sambil menyiapkan kelas ${cat.title}`);
+                    }
+                };
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCategoryModal() {
+            const modal = document.getElementById('category-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // -------------------------------------------------------------
+        // 4. TAB 2: BELAJAR (HABIT CHECKLIST & SELESAIKAN MODUL)
+        // -------------------------------------------------------------
+        function renderHabitChecklist() {
+            const container = document.getElementById('habit-checklist-container');
+            container.innerHTML = appState.habits.map(habit => `
+                <label onclick="toggleHabit(${habit.id})" class="flex items-center justify-between p-3.5 rounded-2xl border transition cursor-pointer select-none ${habit.completed ? 'bg-hijau-lembut/60 border-hijau-mint/40' : 'bg-krem border-slate-200/70 hover:border-hijau-mint/40'}">
+                    <div class="flex items-center gap-3 pr-2">
+                        <div class="w-6 h-6 rounded-lg flex items-center justify-center transition shrink-0 ${habit.completed ? 'bg-hijau-mint text-white' : 'bg-white border-2 border-slate-300'}">
+                            ${habit.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        </div>
+                        <span class="text-xs font-medium ${habit.completed ? 'text-hijau-tua line-through opacity-80' : 'text-slate-700'}">
+                            ${habit.title}
+                        </span>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${habit.completed ? 'bg-hijau-mint/20 text-hijau-tua' : 'bg-white text-emas border border-emas/30'}">
+                        +${habit.xp} XP
+                    </span>
+                </label>
+            `).join('');
+        }
+
+        function toggleHabit(id) {
+            const habit = appState.habits.find(h => h.id === id);
+            if (!habit) return;
+
+            habit.completed = !habit.completed;
+            renderHabitChecklist();
+
+            if (habit.completed) {
+                addXP(habit.xp, "Habit harian selesai!");
+            } else {
+                const deduction = appState.isPlus ? habit.xp * 2 : habit.xp;
+                appState.xp = Math.max(0, appState.xp - deduction);
+                showToast("Habit dibatalkan", "warning");
+                syncAllUI();
+            }
+        }
+
+        function completeModule() {
+            if (appState.moduleCompleted) {
+                showToast("Kamu sudah menyelesaikan E-Modul ini hari ini!", "warning");
+                return;
+            }
+            appState.moduleCompleted = true;
+            const btn = document.getElementById('btn-complete-module');
+            btn.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>E-Modul Selesai (XP Diklaim)</span>`;
+            btn.classList.remove('bg-hijau-mint', 'hover:bg-[#268e65]');
+            btn.classList.add('bg-hijau-tua', 'cursor-default');
+
+            addXP(50, "E-Modul Fiqih Digital selesai!");
+        }
+
+        // -------------------------------------------------------------
+        // 5. TAB 3: FLASHCARD 3D FLIP INTERAKTIF
+        // -------------------------------------------------------------
+        function renderFlashcard() {
+            const card = appState.flashcards[appState.currentCardIndex];
+            const inner = document.getElementById('flashcard-inner');
+
+            // Reset posisi flip saat ganti kartu
+            appState.isCardFlipped = false;
+            inner.classList.remove('is-flipped');
+
+            document.getElementById('flashcard-counter').textContent = `Kartu ${appState.currentCardIndex + 1} dari ${appState.flashcards.length}`;
+            document.getElementById('fc-category-front').textContent = card.category;
+            document.getElementById('fc-arabic').textContent = card.arabic;
+            document.getElementById('fc-front-title').textContent = card.question;
+            document.getElementById('fc-translit').textContent = `Transliterasi: ${card.translit}`;
+
+            document.getElementById('fc-back-meaning').textContent = card.meaning;
+            document.getElementById('fc-back-desc').textContent = card.desc;
+
+            // Status Hafal
+            const statusBadge = document.getElementById('fc-status-badge');
+            const memBtn = document.getElementById('btn-mark-memorized');
+
+            if (card.memorized) {
+                statusBadge.innerHTML = `<span class="text-hijau-mint font-bold"><i class="fa-solid fa-circle-check"></i> Sudah Hafal</span>`;
+                memBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Sudah Dihafal</span>`;
+                memBtn.classList.remove('bg-hijau-mint');
+                memBtn.classList.add('bg-hijau-tua');
+            } else {
+                statusBadge.innerHTML = `<span class="text-slate-400"><i class="fa-regular fa-circle"></i> Belum dihafal</span>`;
+                memBtn.innerHTML = `<i class="fa-solid fa-check-double"></i><span>Tandai Hafal (+25 XP)</span>`;
+                memBtn.classList.add('bg-hijau-mint');
+                memBtn.classList.remove('bg-hijau-tua');
+            }
+
+            // Update jumlah hafal & daftar pills
+            const memorizedTotal = appState.flashcards.filter(c => c.memorized).length;
+            document.getElementById('memorized-count').textContent = memorizedTotal;
+
+            const pillsContainer = document.getElementById('flashcard-pills');
+            pillsContainer.innerHTML = appState.flashcards.map((c, idx) => `
+                <button onclick="jumpToFlashcard(${idx})" class="text-left p-2.5 rounded-xl border text-xs transition flex items-center justify-between ${idx === appState.currentCardIndex ? 'bg-hijau-lembut border-hijau-mint text-hijau-tua font-bold' : 'bg-white border-slate-100 text-slate-600'}">
+                    <span class="truncate pr-1">${idx + 1}. ${c.translit}</span>
+                    ${c.memorized ? '<i class="fa-solid fa-circle-check text-hijau-mint shrink-0"></i>' : '<i class="fa-regular fa-circle text-slate-300 shrink-0"></i>'}
+                </button>
+            `).join('');
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            appState.isCardFlipped = !appState.isCardFlipped;
+            inner.classList.toggle('is-flipped', appState.isCardFlipped);
+        }
+
+        function nextFlashcard() {
+            appState.currentCardIndex = (appState.currentCardIndex + 1) % appState.flashcards.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            appState.currentCardIndex = (appState.currentCardIndex - 1 + appState.flashcards.length) % appState.flashcards.length;
+            renderFlashcard();
+        }
+
+        function jumpToFlashcard(idx) {
+            appState.currentCardIndex = idx;
+            renderFlashcard();
+        }
+
+        function toggleMemorized() {
+            const card = appState.flashcards[appState.currentCardIndex];
+            if (!card.memorized) {
+                card.memorized = true;
+                addXP(25, `Hafal kartu "${card.translit}"!`);
+            } else {
+                card.memorized = false;
+                showToast("Status hafalan kartu direset", "warning");
+            }
+            renderFlashcard();
+        }
+
+        // -------------------------------------------------------------
+        // 6. TAB 4: KUIS GAMIFIKASI STUDI KASUS
+        // -------------------------------------------------------------
+        function renderQuizQuestion() {
+            const qState = appState.quiz;
+            const currentQ = qState.questions[qState.currentIndex];
+            qState.answeredCurrent = false;
+
+            document.getElementById('quiz-q-number').textContent = qState.currentIndex + 1;
+            const progressPct = ((qState.currentIndex + 1) / qState.questions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPct}%`;
+
+            document.getElementById('quiz-topic-badge').textContent = `Studi Kasus • ${currentQ.topic}`;
+            document.getElementById('quiz-question-text').textContent = currentQ.question;
+
+            // Sembunyikan feedback box
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            feedbackBox.classList.add('hidden');
+
+            // Render opsi pilihan ganda
+            const optionsList = document.getElementById('quiz-options-list');
+            const letters = ['A', 'B', 'C', 'D'];
+            optionsList.innerHTML = currentQ.options.map((opt, idx) => `
+                <button onclick="selectQuizOption(${idx})" id="quiz-opt-${idx}" class="w-full text-left p-4 rounded-2xl bg-white border-2 border-slate-100 hover:border-hijau-mint/50 transition flex items-start gap-3 active:scale-[0.99]">
+                    <span class="w-7 h-7 rounded-lg bg-krem text-hijau-tua font-heading font-bold text-xs flex items-center justify-center shrink-0 border border-slate-200">
+                        ${letters[idx]}
+                    </span>
+                    <span class="text-xs font-medium text-slate-700 leading-relaxed pt-0.5">${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectQuizOption(selectedIdx) {
+            const qState = appState.quiz;
+            if (qState.answeredCurrent) return;
+            qState.answeredCurrent = true;
+
+            const currentQ = qState.questions[qState.currentIndex];
+            const isCorrect = selectedIdx === currentQ.correctIndex;
+
+            // Kunci semua tombol dan beri highlight warna
+            currentQ.options.forEach((_, idx) => {
+                const btn = document.getElementById(`quiz-opt-${idx}`);
+                btn.disabled = true;
+                btn.classList.remove('hover:border-hijau-mint/50');
+
+                if (idx === currentQ.correctIndex) {
+                    btn.classList.remove('bg-white', 'border-slate-100');
+                    btn.classList.add('bg-hijau-lembut', 'border-hijau-mint');
+                    btn.querySelector('span:first-child').classList.add('bg-hijau-mint', 'text-white', 'border-hijau-mint');
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.classList.remove('bg-white', 'border-slate-100');
+                    btn.classList.add('bg-rose-50', 'border-rose-400');
+                    btn.querySelector('span:first-child').classList.add('bg-rose-500', 'text-white', 'border-rose-500');
+                }
+            });
+
+            // Tampilkan umpan balik
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            const feedbackIcon = document.getElementById('quiz-feedback-icon');
+            const feedbackTitle = document.getElementById('quiz-feedback-title');
+            const feedbackExp = document.getElementById('quiz-feedback-explanation');
+
+            feedbackBox.classList.remove('hidden', 'bg-hijau-lembut', 'border-hijau-mint', 'bg-rose-50', 'border-rose-300');
+
+            if (isCorrect) {
+                qState.score += 20;
+                qState.correctCount += 1;
+                qState.combo += 1;
+                const gained = appState.isPlus ? 200 : 100;
+                qState.earnedXp += gained;
+
+                // Efek Combo Streak Kuis
+                const comboEl = document.getElementById('quiz-combo');
+                const comboPill = document.getElementById('quiz-streak-pill');
+                comboEl.textContent = qState.combo;
+                comboPill.classList.add('scale-110', 'bg-emas/40');
+                setTimeout(() => comboPill.classList.remove('scale-110', 'bg-emas/40'), 400);
+
+                addXP(100, `Jawaban benar! (${qState.combo}x Combo)`);
+
+                feedbackBox.classList.add('bg-hijau-lembut', 'border-hijau-mint');
+                feedbackIcon.className = 'w-8 h-8 rounded-full bg-hijau-mint text-white flex items-center justify-center shrink-0 mt-0.5';
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                feedbackTitle.className = 'text-sm font-bold text-hijau-tua';
+                feedbackTitle.textContent = `MasyaAllah, Tepat! (+${gained} XP)`;
+                feedbackExp.className = 'text-xs text-slate-700 mt-1 leading-relaxed';
+                feedbackExp.textContent = currentQ.explanation;
+            } else {
+                qState.combo = 0;
+                document.getElementById('quiz-combo').textContent = '0';
+
+                feedbackBox.classList.add('bg-rose-50', 'border-rose-300');
+                feedbackIcon.className = 'w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 mt-0.5';
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                feedbackTitle.className = 'text-sm font-bold text-rose-800';
+                feedbackTitle.textContent = 'Kurang Tepat, Yuk Simak Hikmahnya!';
+                feedbackExp.className = 'text-xs text-rose-900/80 mt-1 leading-relaxed';
+                feedbackExp.textContent = currentQ.explanation;
+            }
+
+            const nextBtn = document.getElementById('btn-next-question');
+            nextBtn.innerHTML = qState.currentIndex === qState.questions.length - 1
+                ? `<span>Lihat Skor & Pembahasan Akhir</span><i class="fa-solid fa-flag-checkered"></i>`
+                : `<span>Lanjut Soal Berikutnya</span><i class="fa-solid fa-arrow-right"></i>`;
+        }
+
+        function nextQuestion() {
+            const qState = appState.quiz;
+            if (qState.currentIndex < qState.questions.length - 1) {
+                qState.currentIndex += 1;
+                renderQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const qState = appState.quiz;
+            document.getElementById('quiz-active-container').classList.add('hidden');
+            document.getElementById('quiz-result-container').classList.remove('hidden');
+
+            document.getElementById('res-score').textContent = qState.score;
+            document.getElementById('res-xp').textContent = `+${qState.earnedXp}`;
+            document.getElementById('res-correct').textContent = `${qState.correctCount}/${qState.questions.length}`;
+
+            const reviewList = document.getElementById('quiz-review-list');
+            reviewList.innerHTML = qState.questions.map((q, idx) => `
+                <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs">
+                    <span class="text-[10px] font-bold text-hijau-mint uppercase">Soal ${idx + 1} • ${q.topic}</span>
+                    <p class="text-xs font-bold text-slate-800 mt-1">${q.question}</p>
+                    <div class="mt-2.5 p-2.5 rounded-xl bg-hijau-lembut/60 text-xs text-hijau-tua">
+                        <strong>Jawaban Tepat:</strong> ${q.options[q.correctIndex]}
+                    </div>
+                    <p class="text-[11px] text-slate-600 mt-2 leading-relaxed">
+                        <strong>Pembahasan:</strong> ${q.explanation}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function restartQuiz() {
+            appState.quiz.currentIndex = 0;
+            appState.quiz.score = 0;
+            appState.quiz.correctCount = 0;
+            appState.quiz.combo = 0;
+            appState.quiz.earnedXp = 0;
+            document.getElementById('quiz-combo').textContent = '0';
+
+            document.getElementById('quiz-result-container').classList.add('hidden');
+            document.getElementById('quiz-active-container').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+        // -------------------------------------------------------------
+        // 7. TAB 5: PROFIL, LENCANA, UPGRADE PLUS & DOWNLOAD SERTIFIKAT
+        // -------------------------------------------------------------
+        function renderBadges() {
+            const grid = document.getElementById('badges-grid');
+            if (!grid) return;
+
+            let unlockedCount = 0;
+            grid.innerHTML = badgesData.map(badge => {
+                const isUnlocked = appState.xp >= badge.requiredXp;
+                if (isUnlocked) unlockedCount++;
+
+                return `
+                    <div class="p-3.5 rounded-2xl border text-center transition ${isUnlocked ? 'bg-emas-muda/70 border-emas/50' : 'bg-slate-50 border-slate-200/70 opacity-65'}">
+                        <div class="w-11 h-11 rounded-2xl mx-auto flex items-center justify-center text-lg mb-2 ${isUnlocked ? 'bg-emas text-hijau-tua shadow-sm' : 'bg-slate-200 text-slate-400'}">
+                            <i class="fa-solid ${isUnlocked ? badge.icon : 'fa-lock'}"></i>
+                        </div>
+                        <h4 class="text-xs font-bold ${isUnlocked ? 'text-hijau-tua' : 'text-slate-500'}">${badge.name}</h4>
+                        <p class="text-[10px] text-teks-abu mt-0.5 leading-snug">${badge.desc}</p>
+                        <span class="inline-block mt-2 text-[9px] font-bold px-2 py-0.5 rounded-full ${isUnlocked ? 'bg-hijau-mint text-white' : 'bg-slate-200 text-slate-500'}">
+                            ${isUnlocked ? 'TERBUKA' : `Butuh ${badge.requiredXp} XP`}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            const countEl = document.getElementById('unlocked-badges-count');
+            if (countEl) countEl.textContent = `${unlockedCount}/${badgesData.length}`;
+        }
+
+        function openUpgradeModal() {
+            if (appState.isPlus) {
+                showToast("Akunmu sudah berstatus Member PLUS aktif!");
+                return;
+            }
+            const modal = document.getElementById('upgrade-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeUpgradeModal() {
+            const modal = document.getElementById('upgrade-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function activatePlusMembership() {
+            appState.isPlus = true;
+            closeUpgradeModal();
+            addXP(150, "Selamat! Akun Kelas Muslim Cerdas Plus Aktif!");
+            syncAllUI();
+        }
+
+        // Membuat & Mengunduh E-Sertifikat Resmi PNG via HTML5 Canvas
+        function downloadCertificate() {
+            try {
+                const canvas = document.getElementById('certificate-canvas');
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+
+                // 1. Background Krem Lembut
+                ctx.fillStyle = '#F8F9F0';
+                ctx.fillRect(0, 0, w, h);
+
+                // 2. Bingkai Ganda Hijau Tua & Emas
+                ctx.strokeStyle = '#0C4B33';
+                ctx.lineWidth = 22;
+                ctx.strokeRect(30, 30, w - 60, h - 60);
+
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 5;
+                ctx.strokeRect(52, 52, w - 104, h - 104);
+
+                // 3. Header Hijau Tua di bagian atas sertifikat
+                ctx.fillStyle = '#0C4B33';
+                ctx.fillRect(55, 55, w - 110, 145);
+
+                ctx.fillStyle = '#D4AF37';
+                ctx.font = 'bold 24px Poppins, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('KELAS MUSLIM CERDAS', w / 2, 118);
+
+                ctx.fillStyle = '#E6F5EE';
+                ctx.font = '18px Plus Jakarta Sans, sans-serif';
+                ctx.fillText('Belajar Islam, Jadi Pribadi Lebih Baik', w / 2, 155);
+
+                // 4. Judul Sertifikat
+                ctx.fillStyle = '#0C4B33';
+                ctx.font = 'bold 46px Poppins, sans-serif';
+                ctx.fillText('SERTIFIKAT APRESIASI', w / 2, 285);
+
+                ctx.fillStyle = '#64748B';
+                ctx.font = '20px Plus Jakarta Sans, sans-serif';
+                ctx.fillText('Diberikan dengan bangga kepada:', w / 2, 335);
+
+                // 5. Nama Peserta
+                ctx.fillStyle = '#0C4B33';
+                ctx.font = 'bold 54px Poppins, sans-serif';
+                ctx.fillText(appState.userName, w / 2, 415);
+
+                // Garis Emas di bawah Nama
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(w / 2 - 260, 438);
+                ctx.lineTo(w / 2 + 260, 438);
+                ctx.stroke();
+
+                // 6. Keterangan Kelulusan & Total XP
+                ctx.fillStyle = '#334155';
+                ctx.font = '22px Plus Jakarta Sans, sans-serif';
+                ctx.fillText('Telah berpartisipasi aktif dan menyelesaikan kurikulum pembelajaran', w / 2, 495);
+                ctx.font = 'bold 24px Poppins, sans-serif';
+                ctx.fillStyle = '#2FA878';
+                ctx.fillText(`"Fiqih Digital & Etika Muslim Modern" (${appState.xp.toLocaleString('id-ID')} XP)`, w / 2, 535);
+
+                // 7. Tanggal & Tanda Tangan Digital
+                const today = new Date().toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#64748B';
+                ctx.font = '18px Plus Jakarta Sans, sans-serif';
+                ctx.fillText('Tanggal Terbit:', 150, 670);
+                ctx.fillStyle = '#0C4B33';
+                ctx.font = 'bold 20px Poppins, sans-serif';
+                ctx.fillText(today, 150, 702);
+
+                // Lencana Emas Tengah Bawah
+                ctx.beginPath();
+                ctx.arc(w / 2, 685, 48, 0, Math.PI * 2);
+                ctx.fillStyle = '#D4AF37';
+                ctx.fill();
+                ctx.fillStyle = '#0C4B33';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 16px Poppins, sans-serif';
+                ctx.fillText('VERIFIED', w / 2, 682);
+                ctx.font = 'bold 13px Poppins, sans-serif';
+                ctx.fillText(appState.isPlus ? 'PLUS MEMBER' : 'ALUMNI', w / 2, 702);
+
+                // Tanda Tangan Direktur Akademik
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#64748B';
+                ctx.font = '18px Plus Jakarta Sans, sans-serif';
+                ctx.fillText('Direktur Akademik,', w - 150, 650);
+                ctx.fillStyle = '#0C4B33';
+                ctx.font = 'italic bold 26px Georgia, serif';
+                ctx.fillText('Ust. Ahmad Fauzan, Lc.', w - 150, 695);
+                ctx.font = '15px Plus Jakarta Sans, sans-serif';
+                ctx.fillStyle = '#2FA878';
+                ctx.fillText('Kelas Muslim Cerdas Indonesia', w - 150, 722);
+
+                // Trigger Download Gambar PNG
+                const link = document.createElement('a');
+                link.download = `E-Sertifikat_Kelas_Muslim_Cerdas_${appState.userName.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                showToast("E-Sertifikat berhasil diunduh ke perangkatmu!");
+            } catch (err) {
+                showToast("Gagal membuat sertifikat, silakan coba lagi.", "warning");
+            }
+        }
+
+        // -------------------------------------------------------------
+        // 8. INISIALISASI APLIKASI SAAT HALAMAN DIMUAT
+        // -------------------------------------------------------------
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderHabitChecklist();
+            renderFlashcard();
+            renderQuizQuestion();
+            syncAllUI();
+        });
+    </script>
+</body>
+</html>
